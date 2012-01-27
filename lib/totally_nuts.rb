@@ -1,9 +1,10 @@
 class TotallyNuts
-  attr_accessor :cogs
+  attr_accessor :cogs, :results
 
   # Populate the @cogs array with the list of numbers
   def initialize input_string
     @cogs = Array.new(0)
+    @results = Array.new(0)
     input_string.each_line do | line |
       @cogs << line.chomp.split(' ').map! { |elem| elem.to_i }
     end
@@ -48,14 +49,17 @@ class TotallyNuts
           when 6
             if puzzle[0][5] == other_cog[2] and puzzle[5][0] == other_cog[3] and puzzle[1][4] == other_cog[1]
               new_puzzle = Array.new(puzzle) << other_cog
-              STDERR.puts "Remaining: #{remaining.inspect}" if remaining.size > 0
-              puts "Solution found."
-              puts "============="
-              new_puzzle.each do | line |
-                line.each { | elem | print "#{elem} " }
-                puts
+              if @display
+                STDERR.puts "Remaining: #{remaining.inspect}" if remaining.size > 0
+                puts "Solution found."
+                puts "============="
+                new_puzzle.each do | line |
+                  line.each { | elem | print "#{elem} " }
+                  puts
+                end
+                puts "============="
               end
-              puts "============="
+              @results << new_puzzle
             end
         end
       end
@@ -64,13 +68,19 @@ class TotallyNuts
 
   # main search function, calls down to assemble_puzzle and returns any valid
   # solutions
-  def search
+  def search display = true
+    @display = display
     @cogs.each do | cog |
+      remainder = Array.new(@cogs)
+      remainder.delete_at(remainder.index(cog))
+
       # Each iteration, the only cogs to be searched are the @cogs - [cog]
-      puts
-      puts "Searching #{cog.inspect} against #{@cogs - [cog]}"
-      puts "============================"
-      assemble_puzzle([cog], @cogs - [cog])
+      if @display
+        puts
+        puts "Searching #{cog.inspect} against #{remainder}"
+        puts "============================"
+      end
+      assemble_puzzle([cog], remainder)
     end
   end
 

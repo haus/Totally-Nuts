@@ -18,10 +18,11 @@ class TotallyNuts
   # assemble_puzzle takes the puzzle so far and tries to add a piece from the
   # pieces array to it, calling assemble_puzzle again recursively until solved
   def assemble_puzzle(puzzle, pieces)
-    pieces.each do | other_cog |
-      remaining = pieces - [other_cog]
+    pieces.each do | a_cog |
+      other_cog = Array.new(a_cog)
+      remaining = pieces - [a_cog]
 
-      1.upto(other_cog.size) do
+      1.upto(a_cog.size) do
         other_cog.rotate!
 
         case puzzle.size
@@ -47,7 +48,7 @@ class TotallyNuts
             end
           when 6
             if puzzle[0][5] == other_cog[2] and puzzle[5][0] == other_cog[3] and puzzle[1][4] == other_cog[1]
-              new_puzzle = puzzle << other_cog
+              new_puzzle = Array.new(puzzle) << other_cog
               STDERR.puts "Remaining: #{remaining.inspect}" if remaining.size > 0
               puts "Solution found."
               puts "============="
@@ -56,7 +57,6 @@ class TotallyNuts
                 puts
               end
               puts "============="
-              return
             end
         end
       end

@@ -44,4 +44,22 @@ describe TotallyNuts do
       total_nuts.results.size.should > 0
     end
   end
+
+  describe "Using the Drive Ya Nuts puzzle from the web site. Known to have one solution" do
+    let (:puzzle) { "3 5 2 4 6 1\n6 3 4 1 2 5\n1 3 5 4 2 6\n3 2 6 4 1 5\n2 3 4 5 6 1\n4 3 2 1 6 5\n5 6 1 4 2 3" }
+    let (:total_nuts) { TotallyNuts.new(puzzle) }
+
+    before do
+      total_nuts.search(false)
+    end
+
+    it "should parse the puzzle text correctly" do
+      total_nuts.cogs.should == [ [3,5,2,4,6,1], [6,3,4,1,2,5], [1,3,5,4,2,6], [3,2,6,4,1,5], [2,3,4,5,6,1], [4,3,2,1,6,5], [5,6,1,4,2,3] ]
+    end
+
+    it "should have exactly one solution" do
+      total_nuts.results.size.should == 1
+      total_nuts.results.include?([ [1,3,5,4,2,6], [2,6,4,1,5,3], [5,6,1,2,3,4], [2,4,6,1,3,5], [4,3,2,1,6,5], [1,2,5,6,3,4], [3,5,6,1,4,2] ]).should == true
+    end
+  end
 end

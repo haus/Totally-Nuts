@@ -59,7 +59,7 @@ class TotallyNuts
                 end
                 puts "============="
               end
-              @results << new_puzzle
+              @results << Marshal.load(Marshal.dump(new_puzzle))
             end
         end
       end

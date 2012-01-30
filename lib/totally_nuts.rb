@@ -2,7 +2,7 @@ class TotallyNuts
   attr_accessor :cogs, :results
 
   # Populate the @cogs array with the list of numbers
-  def initialize input_string
+  def initialize(input_string)
     @cogs = Array.new(0)
     @results = Array.new(0)
     input_string.each_line do | line |
@@ -68,7 +68,7 @@ class TotallyNuts
 
   # main search function, calls down to assemble_puzzle and returns any valid
   # solutions
-  def search display = true
+  def search(display = true)
     @display = display
     @cogs.each do | cog |
       remainder = Array.new(@cogs)
@@ -83,5 +83,4 @@ class TotallyNuts
       assemble_puzzle([cog], remainder)
     end
   end
-
 end
